@@ -1,0 +1,29 @@
+<html layout:decorate="layout">
+  <div layout:fragment="content">
+    <a class="btn btn-primary" href = "/reviews/create">Create</a>
+
+    <table class="table">
+      <tr>
+        <th>Course</th>
+        <th>Student</th>
+        <th>Comment</th>
+        <th></th>
+      </tr>
+      <tr th:each="review:${reviews}">
+        <td th:text="${review.course.courseId}"/>
+        <td th:text="${review.student.lastName}"/>
+        <td th:text="${review.comment}"/>
+        <td>
+          <a class = "btn btn-info" th:href="@{/reviews/{reviewId}/edit(reviewId=${review.id})}">Edit</a>
+          <a
+                  th:onclick="@{if(!confirm('are you sure you want to delete?'))return false}"
+                  class = "btn btn-danger" th:href="@{/reviews/{reviewId}/delete(reviewId=${review.id})}">
+            Delete
+          </a>
+
+        </td>
+      </tr>
+    </table>
+
+  </div>
+</html>

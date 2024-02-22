@@ -1,0 +1,27 @@
+<html layout:decorate="layout">
+  <div layout:fragment="content">
+    <a class="btn btn-primary" href = "/instructors/create">Create</a>
+
+    <table class="table">
+      <tr>
+        <th>Last Name</th>
+        <th>First Name</th>
+        <th></th>
+      </tr>
+      <tr th:each="instructor:${instructors}">
+        <td th:text="${instructor.lastName}"/>
+        <td th:text="${instructor.firstName}"/>
+        <td>
+          <a class = "btn btn-info" th:href="@{/instructors/{instructorId}(instructorId=${instructor.id})}">Detail</a>
+          <a
+                  th:onclick="@{if(!confirm('are you sure you want to delete {lastName}?'))return false(lastName = ${instructor.lastName})}"
+                  class = "btn btn-danger" th:href="@{/instructors/{instructorId}/delete(instructorId=${instructor.id})}">
+            Delete
+          </a>
+
+        </td>
+      </tr>
+    </table>
+
+  </div>
+</html>

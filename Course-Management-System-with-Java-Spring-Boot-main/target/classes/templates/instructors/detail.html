@@ -1,0 +1,50 @@
+<html layout:decorate="layout">
+  <div layout:fragment="content">
+    <h3>About Instructor <span th:text="${instructor.lastName}"/></h3>
+    <ul class="list-group mt-3">
+      <li class="list-group-item">Last Name: <span th:text="${instructor.lastName}"/></li>
+      <li class="list-group-item">First Name: <span th:text="${instructor.firstName}"/></li>
+      <li class="list-group-item">Email: <span th:text="${instructor.instructorDetail.email}"/></li>
+      <li class="list-group-item">Phone: <span th:text="${instructor.instructorDetail.phone}"/></li>
+    </ul>
+    <div class = "mt-2">
+      <a th:href = "@{/instructors/{instructorId}/edit(instructorId=${instructor.id})}" class = "btn btn-primary mr-2">Edit</a>
+      <a href = "/instructors">Back to Instructor List</a>
+    </div>
+
+    <div class="mt-3">
+      <h3>Professor <span th:text="${instructor.lastName}"/>'s Courses</h3>
+      <table class="table">
+        <tr>
+          <th>Course Id</th>
+          <th>Title</th>
+          <th></th>
+        </tr>
+        <tr th:each="course:${instructor.courses}">
+          <td th:text="${course.courseId}"/>
+          <td th:text="${course.title}"/>
+          <td>
+            <a
+                    th:onclick="@{if(!confirm('are you sure you want to deselect {title}?'))return false(title = ${course.title})}"
+                    class = "btn btn-danger" th:href="@{/instructors/{instructorId}/deselect/{courseId}(instructorId=${instructor.id},courseId=${course.id})}">
+              Deselect
+            </a>
+
+          </td>
+        </tr>
+      </table>
+      <h4>Add a Course</h4>
+      <form th:action ="@{/instructors/{instructorId}/addCourse(instructorId=${instructor.id})}" method="post">
+        <select class = "form-select" name = "courseId">
+          <option th:each="course:${courses}" th:value="${course.id}" th:text = "${course.instructor != null
+          ?
+          course.title + ' taught by Prof. ' + course.instructor.lastName
+          :
+          course.title
+          }"/>
+        </select>
+        <button class = "btn btn-success mt-2">Add Course</button>
+      </form>
+    </div>
+  </div>
+</html>

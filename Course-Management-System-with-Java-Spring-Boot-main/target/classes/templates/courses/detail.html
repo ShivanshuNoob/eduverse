@@ -1,0 +1,47 @@
+<html layout:decorate="layout">
+  <div layout:fragment="content">
+    <h3>About Course <span th:text="${course.courseId}"/></h3>
+    <ul class="list-group mt-3">
+      <li class="list-group-item">Course Id: <span th:text="${course.courseId}"/></li>
+      <li class="list-group-item">Title: <span th:text="${course.title}"/></li>
+      <li class="list-group-item">Description: <span th:text="${course.description}"/></li>
+      <li class="list-group-item">Instructor: <span th:text="${course.instructor.firstName + ' ' + course.instructor.lastName}"/></li>
+    </ul>
+    <div class = "mt-2">
+      <a th:href = "@{/courses/{courseId}/edit(courseId=${course.id})}" class = "btn btn-primary mr-2">Edit</a>
+      <a href = "/instructors">Back to Courses List</a>
+    </div>
+    <h4>Students Enrolled</h4>
+    <table class="table">
+      <tr>
+        <th>Student Id</th>
+        <th>Last Name</th>
+        <th>First Name</th>
+        <th></th>
+      </tr>
+      <tr th:each="student:${course.students}">
+        <td th:text="${student.studentId}"/>
+        <td th:text="${student.lastName}"/>
+        <td th:text="${student.firstName}"/>
+        <td>
+          <a class = "btn btn-info" th:href="@{/students/{studentId}(studentId=${student.id})}">Detail</a>
+          <a class="btn btn-danger" th:href =
+                  "@{/students/{studentId}/deselect/{courseId}(studentId=${student.id},courseId=${course.id},source='course')}"
+          >Deselect</a>
+        </td>
+      </tr>
+    </table>
+    <h4>Student Reviews</h4>
+    <table class="table">
+      <tr>
+        <th>Comment</th>
+        <th>By</th>
+        <th></th>
+      </tr>
+      <tr th:each="review:${course.reviews}">
+        <td th:text="${review.comment}"/>
+        <td th:text="${review.student.lastName}"/>
+      </tr>
+    </table>
+  </div>
+</html>

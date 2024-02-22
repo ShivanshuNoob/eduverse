@@ -1,0 +1,35 @@
+<html layout:decorate="layout">
+<div layout:fragment="content">
+  <h3>Add a Course</h3>
+  <form th:action="@{/courses/create}" method="post" th:object = "${course}">
+
+    <div class="form-group">
+      <label for="courseId">Course Id</label>
+      <input type="text" class="form-control" id="courseId" placeholder="Course Id" th:field = "*{courseId}">
+      <div th:errors="*{courseId}" class = "alert alert-danger" />
+    </div>
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" class="form-control" id="title" placeholder="First Name" th:field = "*{title}">
+      <div th:errors="*{title}" class = "alert alert-danger"/>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea class="form-control"  id="description" placeholder="description" th:field = "*{description}">
+      </textarea>
+    </div>
+    <div class="form-group">
+      <label for="instructor">Choose an Instructor</label>
+      <select class="form-select" id = "instructor" th:field = "*{instructor.id}">
+        <option th:each = "instructor:${instructors}" th:value="${instructor.id}" th:text="'Prof. ' + ${instructor.lastName}"/>
+      </select>
+      <div th:errors="*{instructor}" class = "alert alert-danger"/>
+    </div>
+
+    <button type="submit" class="btn btn-primary mr-2 mt-2">Submit</button>
+    <a href = "/courses">Back to Courses List</a>
+  </form>
+
+</div>
+</html>

@@ -1,0 +1,30 @@
+<html layout:decorate="layout">
+  <div layout:fragment="content">
+    <h3>Edit Instructor</h3>
+    <form th:action="@{/reviews/{reviewId}/edit(reviewId=${review.id})}" method="post" th:object = "${review}">
+      <input th:field = "*{id}" hidden>
+      <div>
+        <label>Select A Course</label>
+        <select class="form-select" th:field = "*{course.id}">
+          <option th:each="course:${courses}" th:value="${course.id}" th:text="${course.courseId + ' ' + course.title}"/>
+        </select>
+        <div th:errors="*{course}" class = "alert alert-danger"/>
+      </div>
+      <div class ="mt-2">
+        <label>Select A Student</label>
+        <select class="form-select" th:field = "*{student.id}">
+          <option th:each="student:${students}" th:value="${student.id}" th:text="${student.firstName + ' ' + student.firstName}"/>
+        </select>
+        <div th:errors="*{student}" class = "alert alert-danger"/>
+      </div>
+
+      <div class="form-group mt-2">
+        <label for="comment">Comment</label>
+        <textarea class="form-control"  id="comment" placeholder="Comment" th:field = "*{comment}">
+      </textarea>
+      </div>
+      <button type="submit" class="btn btn-primary mr-2 mt-2">Submit</button>
+      <a th:href = "@{/reviews}">Back to Review List</a>
+    </form>
+  </div>
+</html>

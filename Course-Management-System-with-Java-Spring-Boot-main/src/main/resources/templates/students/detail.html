@@ -1,0 +1,53 @@
+<html layout:decorate="layout">
+  <div layout:fragment="content">
+    <h3>About Student <span th:text="${student.lastName}"/></h3>
+    <ul class="list-group mt-3">
+      <li class="list-group-item">Student Id: <span th:text="${student.studentId}"/></li>
+      <li class="list-group-item">Last Name: <span th:text="${student.lastName}"/></li>
+      <li class="list-group-item">First Name: <span th:text="${student.firstName}"/></li>
+    </ul>
+    <div class = "mt-2">
+      <a th:href = "@{/students/{studentId}/edit(studentId=${student.id})}" class = "btn btn-primary mr-2">Edit</a>
+      <a href = "/students">Back to Student List</a>
+    </div>
+    <h4>Selected Courses</h4>
+    <table class = "table">
+      <tr>
+        <th>Course Id</th>
+        <th>Title</th>
+        <th></th>
+      </tr>
+      <tr th:each="course:${student.courses}">
+        <td th:text="${course.courseId}"/>
+        <td th:text="${course.title}"/>
+        <td>
+          <a class="btn btn-danger" th:href = "@{/students/{studentId}/deselect/{courseId}(studentId=${student.id},courseId=${course.id})}">Deselect</a>
+        </td>
+      </tr>
+    </table>
+
+    <h4>Add a Course</h4>
+    <form th:action = "@{/students/{studentId}/addCourse(studentId=${student.id})}" method ="post">
+      <select class = "form-select" name = "courseId">
+        <option th:each="course:${courses}" th:value ="${course.id}" th:text="${course.courseId + ' ' + course.title}">
+
+        </option>
+
+      </select>
+      <button class = "btn btn-success mt-2">Submit</button>
+    </form>
+
+    <h4>Student Reviews</h4>
+    <table class="table">
+      <tr>
+        <th>Comment</th>
+        <th>Course</th>
+        <th></th>
+      </tr>
+      <tr th:each="review:${student.reviews}">
+        <td th:text="${review.comment}"/>
+        <td th:text="${review.course.courseId}"/>
+      </tr>
+    </table>
+  </div>
+</html>

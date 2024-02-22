@@ -1,0 +1,74 @@
+CREATE DATABASE `development_java` ;
+
+USE  `development_java` ;
+
+CREATE TABLE  IF NOT EXISTS `instructor_detail` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `email` varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
+  `phone` varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE  IF NOT EXISTS `instructor` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `last_name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `detail_id` int,
+  PRIMARY KEY (`id`),
+  KEY `FK_INSTRUCTOR_DETAIL_idx` (`detail_id`),
+  CONSTRAINT `FK_INSTRUCTOR_DETAIL` FOREIGN KEY (`detail_id`) REFERENCES `instructor_detail` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `course` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `course_id` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `title` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `description` mediumtext,
+  `instructor_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_INSTRUCTOR_idx` (`instructor_id`),
+  CONSTRAINT `FK_INSTRUCTOR` FOREIGN KEY (`instructor_id`) REFERENCES `instructor` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `student` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `student_id` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `last_name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `first_name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `course_student` (
+  `course_id` int NOT NULL,
+  `student_id` int NOT NULL,
+  PRIMARY KEY (`course_id`,`student_id`),
+  KEY `FK_STUDENT_idx` (`student_id`),
+  CONSTRAINT `FK_COURSE` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`),
+  CONSTRAINT `FK_STUDENT` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `review` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `comment` varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `course_id` int NOT NULL,
+  `student_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_COURSE_idx` (`course_id`),
+  KEY `FK_STUDENT_idx` (`student_id`),
+  CONSTRAINT `FK_REVIEW_COURSE` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`),
+  CONSTRAINT `FK_REVIEW_STUDENT` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `users` (
+  `username` varchar(250) NOT NULL,
+  `password` varchar(250) NOT NULL,
+  `enabled` tinyint NOT NULL,
+  PRIMARY KEY (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `authorities` (
+  `username` varchar(250) NOT NULL,
+  `authority` varchar(250) NOT NULL,
+  PRIMARY KEY (`username`,`authority`),
+  CONSTRAINT `FK_USERNAME` FOREIGN KEY (`username`) REFERENCES `users` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
